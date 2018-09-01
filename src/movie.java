@@ -47,19 +47,19 @@ public class movie extends Application {
             // ディスプレイサイズを取得
             primaryScreenBounds = Screen.getPrimary().getVisualBounds();
 
-            System.out.println(primaryScreenBounds.getWidth());
-            System.out.println(primaryScreenBounds.getHeight());
-
             // シーングラフを作成
             Pane        = new StackPane();
 
             ///////////////////////////////////////////////////////////////////////
             // 画像ファイルのパスを取得
-            f = new File("/Users/satokanako/Desktop/black.png");
+            f = new File("/Users/satokanako/Desktop/ISDL/研究/輝度測定データ/ディスプレイ/使用画像一覧/海.jpg");
 
             // 画像をインスタンス化
             img = new Image(f.toURI().toString());
             imgView = new ImageView(img);
+
+            imgView.setFitWidth(1920);
+            imgView.setFitHeight(1080);
             ///////////////////////////////////////////////////////////////////////
 
             // シーンを追加
@@ -67,19 +67,22 @@ public class movie extends Application {
                     primaryScreenBounds.getHeight());
 
             //動画の枠の設定
+            mediaView.setFitWidth(primaryScreenBounds.getWidth());
+            mediaView.setFitHeight(900);
             Pane.getChildren().add(mediaView);
 
             //矩形
             rect = new Rectangle(0,0,primaryScreenBounds.getWidth()+50,primaryScreenBounds.getHeight()+50);
-            clr = new Color(0, 0, 0, 1);
+            clr = new Color(0, 0, 0, 0);
             rect.setStroke(clr);//線の色を指定
             rect.setFill(clr);//塗りつぶしをしない
-            Pane.getChildren().add(rect);
+            //Pane.getChildren().add(rect);
 
             //////////////////////////////////////////////////// シーングラフに追加
             Pane.getChildren().add(imgView);
             ////////////////////////////////////////////////////
 
+            Pane.getChildren().add(rect);
             // ステージ設定
             primaryStage.setFullScreen(true);
             primaryStage.setFullScreenExitHint("");
@@ -171,7 +174,7 @@ public class movie extends Application {
 
                     break;
 
-                case DIGIT2:
+                case DIGIT2: //暗くする
                     opacity = opacity - 0.05;
                     if(opacity<0)
                         opacity = 0;
@@ -184,7 +187,7 @@ public class movie extends Application {
                     System.out.println(opacity);
                     break;
 
-                case DIGIT3:
+                case DIGIT3: //明るくする
                     opacity = opacity + 0.05;
                     if(opacity>1)
                         opacity = 1;
@@ -194,6 +197,31 @@ public class movie extends Application {
                     rect.setFill(clr);//塗りを指定
 
                     System.out.println(opacity);
+                    break;
+                case DIGIT5: // 0
+                    clr = new Color(0, 0, 0, 0);
+                    rect.setStroke(clr);//線の色を指定
+                    rect.setFill(clr);//塗りを指定
+                    break;
+                case DIGIT6: // 0.25
+                    clr = new Color(0, 0, 0, 0.25);
+                    rect.setStroke(clr);//線の色を指定
+                    rect.setFill(clr);//塗りを指定
+                    break;
+                case DIGIT7: // 0.45
+                    clr = new Color(0, 0, 0, 0.45);
+                    rect.setStroke(clr);//線の色を指定
+                    rect.setFill(clr);//塗りを指定
+                    break;
+                case DIGIT8: // 0.6
+                    clr = new Color(0, 0, 0, 0.6);
+                    rect.setStroke(clr);//線の色を指定
+                    rect.setFill(clr);//塗りを指定
+                    break;
+                case DIGIT9: // 0.7
+                    clr = new Color(0, 0, 0, 0.7);
+                    rect.setStroke(clr);//線の色を指定
+                    rect.setFill(clr);//塗りを指定
                     break;
                 default:
                     break;
