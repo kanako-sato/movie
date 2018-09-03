@@ -49,10 +49,10 @@ public class movie extends Application {
 
             // シーングラフを作成
             Pane        = new StackPane();
-
+/*
             ///////////////////////////////////////////////////////////////////////
             // 画像ファイルのパスを取得
-            f = new File("/Users/satokanako/Desktop/ISDL/研究/輝度測定データ/ディスプレイ/使用画像一覧/海.jpg");
+            f = new File("/Users/satokanako/Desktop/ISDL/研究/輝度測定データ/ディスプレイ/使用画像一覧/KICK.png");
 
             // 画像をインスタンス化
             img = new Image(f.toURI().toString());
@@ -61,25 +61,25 @@ public class movie extends Application {
             imgView.setFitWidth(1920);
             imgView.setFitHeight(1080);
             ///////////////////////////////////////////////////////////////////////
-
+*/
             // シーンを追加
             scene   = new Scene(Pane, primaryScreenBounds.getWidth(),
                     primaryScreenBounds.getHeight());
 
             //動画の枠の設定
             mediaView.setFitWidth(primaryScreenBounds.getWidth());
-            mediaView.setFitHeight(900);
+            //mediaView.setFitHeight(900);
             Pane.getChildren().add(mediaView);
 
             //矩形
             rect = new Rectangle(0,0,primaryScreenBounds.getWidth()+50,primaryScreenBounds.getHeight()+50);
-            clr = new Color(0, 0, 0, 0);
+            clr = new Color(0, 0, 0, 1);
             rect.setStroke(clr);//線の色を指定
             rect.setFill(clr);//塗りつぶしをしない
             //Pane.getChildren().add(rect);
 
             //////////////////////////////////////////////////// シーングラフに追加
-            Pane.getChildren().add(imgView);
+            //Pane.getChildren().add(imgView);
             ////////////////////////////////////////////////////
 
             Pane.getChildren().add(rect);
@@ -125,7 +125,7 @@ public class movie extends Application {
 
                     break;
 
-                case DIGIT0: //クリスマス
+                case DIGIT0: //KICK
                     System.out.println("0を押下しました。");
 
                     clr = new Color(0, 0, 0, opacity);
@@ -133,7 +133,7 @@ public class movie extends Application {
                     rect.setFill(clr);//塗りを指定
 
                     // 動画ファイルのパスを取得
-                    f = new File("/Users/satokanako/Downloads/擬似窓動画/Christmas_Santa_Sleigh_Motion_Background_4K.mp4");
+                    f = new File("/Users/satokanako/Desktop/ISDL/研究/参考/video_01.MP4");
 
                     // 動画再生クラスをインスタンス化
                     Video = new Media(f.toURI().toString());
@@ -199,27 +199,44 @@ public class movie extends Application {
                     System.out.println(opacity);
                     break;
                 case DIGIT5: // 0
-                    clr = new Color(0, 0, 0, 0);
+                    opacity = 0;
+                    clr = new Color(0, 0, 0, opacity);
                     rect.setStroke(clr);//線の色を指定
                     rect.setFill(clr);//塗りを指定
                     break;
                 case DIGIT6: // 0.25
-                    clr = new Color(0, 0, 0, 0.25);
+                    opacity = 0.25;
+                    clr = new Color(0, 0, 0, opacity);
                     rect.setStroke(clr);//線の色を指定
                     rect.setFill(clr);//塗りを指定
                     break;
                 case DIGIT7: // 0.45
-                    clr = new Color(0, 0, 0, 0.45);
+                    opacity = 0.45;
+                    clr = new Color(0, 0, 0, opacity);
                     rect.setStroke(clr);//線の色を指定
                     rect.setFill(clr);//塗りを指定
                     break;
                 case DIGIT8: // 0.6
-                    clr = new Color(0, 0, 0, 0.6);
+                    opacity = 0.6;
+                    clr = new Color(0, 0, 0, opacity);
                     rect.setStroke(clr);//線の色を指定
                     rect.setFill(clr);//塗りを指定
                     break;
                 case DIGIT9: // 0.7
-                    clr = new Color(0, 0, 0, 0.7);
+                    opacity = 0.7;
+                    clr = new Color(0, 0, 0, opacity);
+                    rect.setStroke(clr);//線の色を指定
+                    rect.setFill(clr);//塗りを指定
+                    break;
+                case A: // 0.55（従来と同等）
+                    opacity = 0.55;
+                    clr = new Color(0, 0, 0, opacity);
+                    rect.setStroke(clr);//線の色を指定
+                    rect.setFill(clr);//塗りを指定
+                    break;
+                case S: // 0.95（最小）
+                    opacity = 0.95;
+                    clr = new Color(0, 0, 0, opacity);
                     rect.setStroke(clr);//線の色を指定
                     rect.setFill(clr);//塗りを指定
                     break;
