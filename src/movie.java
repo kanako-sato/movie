@@ -2,6 +2,10 @@
  */
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -19,12 +23,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 public class movie extends Application {
-    //Stage primaryStage = new Stage();
     protected StackPane Pane;
     protected Scene  scene;
     protected File f;
@@ -36,12 +40,10 @@ public class movie extends Application {
     protected Rectangle rect;
     protected Color clr;
     protected double opacity = 0;
+    String log = "1";
 
     public void start(Stage primaryStage) throws Exception {
         try {
-            //primaryStage.initStyle(StageStyle.TRANSPARENT);
-            //primaryStage.getScene().getRoot().setStyle(-fx-background-color: transparent");
-
             Rectangle2D     primaryScreenBounds     = null;                     // ディスプレイサイズ
 
             // ディスプレイサイズを取得
@@ -52,7 +54,7 @@ public class movie extends Application {
 /*
             ///////////////////////////////////////////////////////////////////////
             // 画像ファイルのパスを取得
-            f = new File("/Users/satokanako/Desktop/ISDL/研究/輝度測定データ/ディスプレイ/使用画像一覧/KICK.png");
+            f = new File("/Users/satokanako/Desktop/ISDL/研究/輝度測定データ/ディスプレイ/使用画像一覧/白.jpeg");
 
             // 画像をインスタンス化
             img = new Image(f.toURI().toString());
@@ -64,15 +66,15 @@ public class movie extends Application {
 */
             // シーンを追加
             scene   = new Scene(Pane, primaryScreenBounds.getWidth(),
-                    primaryScreenBounds.getHeight());
+                    primaryScreenBounds.getHeight()*2);
 
             //動画の枠の設定
+            //mediaView.setFitHeight(primaryScreenBounds.getHeight());
             mediaView.setFitWidth(primaryScreenBounds.getWidth());
-            //mediaView.setFitHeight(900);
             Pane.getChildren().add(mediaView);
 
             //矩形
-            rect = new Rectangle(0,0,primaryScreenBounds.getWidth()+50,primaryScreenBounds.getHeight()+50);
+            rect = new Rectangle(0,0,primaryScreenBounds.getWidth()+50,(primaryScreenBounds.getHeight()+50)*2);
             clr = new Color(0, 0, 0, 1);
             rect.setStroke(clr);//線の色を指定
             rect.setFill(clr);//塗りつぶしをしない
@@ -85,6 +87,7 @@ public class movie extends Application {
             Pane.getChildren().add(rect);
             // ステージ設定
             primaryStage.setFullScreen(true);
+            //primaryStage.initStyle(StageStyle.UNDECORATED);
             primaryStage.setFullScreenExitHint("");
             primaryStage.setTitle("VideoPlay");
             primaryStage.setScene(scene);
@@ -97,9 +100,21 @@ public class movie extends Application {
                 popup.show(primaryStage, event.getScreenX(), event.getScreenY());
             });
 
+            // マウスホイール操作でウィンドウの大きさを変更
+            scene.setOnScroll(event -> {
+                if (event.isControlDown()) {
+                    zoom(event.getDeltaY() > 0 ? 1.1 : 0.9, primaryStage);
+                }
+            });
+
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void zoom(double factor, Stage stage) {
+        stage.setWidth(stage.getWidth() * factor);
+        stage.setHeight(stage.getHeight() * factor);
     }
 
     private ContextMenu createContextMenu(Stage stage) {
@@ -133,11 +148,12 @@ public class movie extends Application {
                     rect.setFill(clr);//塗りを指定
 
                     // 動画ファイルのパスを取得
-                    f = new File("/Users/satokanako/Desktop/ISDL/研究/参考/video_01.MP4");
+                    f = new File("/Users/satokanako/Desktop/M1070003.MP4");
 
                     // 動画再生クラスをインスタンス化
                     Video = new Media(f.toURI().toString());
                     Play = new MediaPlayer(Video);
+                    Play.setVolume(0);
 
                     //動画の更新
                     mediaView.setMediaPlayer(Play);
@@ -164,6 +180,8 @@ public class movie extends Application {
                     // 動画再生クラスをインスタンス化
                     Video = new Media(f.toURI().toString());
                     Play = new MediaPlayer(Video);
+                    Play.setVolume(0);
+
                     //動画更新
                     mediaView.setMediaPlayer(Play);
 
@@ -185,6 +203,9 @@ public class movie extends Application {
                     rect.setFill(clr);//塗りを指定
 
                     System.out.println(opacity);
+
+                    log = log + "," + opacity;
+
                     break;
 
                 case DIGIT3: //明るくする
@@ -197,7 +218,9 @@ public class movie extends Application {
                     rect.setFill(clr);//塗りを指定
 
                     System.out.println(opacity);
+                    log = log + "," + opacity;
                     break;
+
                 case DIGIT5: // 0
                     opacity = 0;
                     clr = new Color(0, 0, 0, opacity);
@@ -240,14 +263,42 @@ public class movie extends Application {
                     rect.setStroke(clr);//線の色を指定
                     rect.setFill(clr);//塗りを指定
                     break;
-                default:
+
+                case COMMA: //pause
+                    Play.pause();
                     break;
+                case PERIOD: //play
+                    Play.play();
+                    break;
+                case Z:
+                    exportCsv(log);
             }
         }
+    }
+
+    public static void exportCsv(String log){
+
+        try {
+
+            // 出力ファイルの作成
+            FileWriter file = new FileWriter("/Users/satokanako/Desktop/result.csv", false);
+            PrintWriter p = new PrintWriter(new BufferedWriter(file));
+
+            // 内容をセットする
+            p.print(log);
+
+            // ファイルに書き出し閉じる
+            p.close();
+
+            System.out.println("ファイル出力完了");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     public static void main(String[] args) {
         launch(args);
     }
 }
-
